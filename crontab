@@ -1,0 +1,2 @@
+11 20 * * 2 root /run-stats.sh >> /var/log/cron.log 2>&1
+

@@ -16,7 +16,12 @@ RUN mkdir /usr/local/share/texmf/tex/
 RUN mkdir /usr/local/share/texmf/tex/latex/
 RUN cd /usr/local/share/texmf/tex/latex/ && git clone https://github.com/ppschweiz/mmd
 RUN cd /usr/local/share/texmf/&&  mktexlsr
+RUN echo "D"
 RUN git clone https://github.com/ppschweiz/python-civi
-COPY run.sh /run.sh
-CMD ["/run.sh"]
+RUN apt-get install cron
+COPY run-stats.sh /run-stats.sh
+COPY crontab /etc/cron.d/factura-cron
+RUN chmod 0644 /etc/cron.d/factura-cron
+RUN touch /var/log/cron.log
+CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && cron && tail -f /var/log/cron.log
 
