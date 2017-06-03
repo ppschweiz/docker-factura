@@ -1,8 +1,8 @@
 #!/bin/bash
 
 date
-echo "stats"
+echo "facturer"
 source /env
 cd /python-civi
-python3 run-stats.py
+python3 run-facturer.py HOT
 
