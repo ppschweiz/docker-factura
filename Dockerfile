@@ -1,9 +1,9 @@
-FROM ubuntu:16.04
+FROM ppschweiz/texlive-full
 
-RUN echo "D"
+RUN echo "A"
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk texlive-full cron wget python3-gnupg
+RUN apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk cron wget python3-gnupg
 RUN wget https://www.fontsquirrel.com/fonts/download/Aller
 RUN mv Aller Aller.zip
 RUN unzip Aller.zip
@@ -22,11 +22,11 @@ COPY run-facturer.sh /run-facturer.sh
 COPY crontab /etc/cron.d/factura-cron
 RUN chmod 0644 /etc/cron.d/factura-cron
 RUN touch /var/log/cron.log
+RUN apt install -y locales
 RUN locale-gen de_CH.UTF-8  
 ENV LANG de_CH.UTF-8  
 ENV LANGUAGE de_CH:de
 ENV LC_ALL de_CH.UTF-8  
-#CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && cron && tail -f /var/log/cron.log
-CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && /run-facturer.sh
+CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && cron && tail -f /var/log/cron.log
 
 
