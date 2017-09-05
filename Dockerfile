@@ -5,9 +5,11 @@ WORKDIR /
 ARG DEBIAN_FRONTEND=noninteractive
 
 # updated and install base system
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk cron wget python3-gnupg locales
+RUN apt-get update \
+ && apt-get upgrade -y \
+ && apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk cron wget python3-gnupg locales \
+ && apt-get -y clean \
+ && rm -rf /var/lib/apt/lists/*
 
 # setup locale
 RUN locale-gen de_CH.UTF-8  
