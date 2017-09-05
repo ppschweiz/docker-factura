@@ -2,6 +2,8 @@ FROM timnn/texlive
 
 WORKDIR /
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 # updated and install base system
 RUN apt-get update
 RUN apt-get upgrade -y
