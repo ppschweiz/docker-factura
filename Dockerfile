@@ -1,5 +1,7 @@
 FROM timnn/texlive
 
+WORKDIR /
+
 # updated and install base system
 RUN apt-get update
 RUN apt-get upgrade -y
@@ -12,10 +14,10 @@ ENV LANGUAGE de_CH:de
 ENV LC_ALL de_CH.UTF-8  
 
 # install needed font Aller
-RUN wget https://www.fontsquirrel.com/fonts/download/Aller
-RUN mv Aller Aller.zip
-RUN unzip Aller.zip
-RUN mv Aller*.ttf /usr/share/fonts/truetype/
+WORKDIR /
+RUN wget https://www.fontsquirrel.com/fonts/download/Aller -O Aller.zip
+RUN unzip Aller.zip -d /usr/share/fonts/truetype/
+RUN rm Aller.zip
 RUN fc-cache -fv
 
 # install latex templates
@@ -42,5 +44,3 @@ RUN touch /var/log/cron.log
 
 # update environment variables and run cron
 CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && cron && tail -f /var/log/cron.log
-
-
