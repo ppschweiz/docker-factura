@@ -1,4 +1,4 @@
-FROM ppschweiz/texlive-full
+FROM timnn/texlive
 
 # updated and install base system
 RUN apt-get update
