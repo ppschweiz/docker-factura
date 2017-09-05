@@ -12,10 +12,10 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # setup locale
-RUN locale-gen de_CH.UTF-8  
-ENV LANG de_CH.UTF-8  
+RUN locale-gen de_CH.UTF-8
+ENV LANG de_CH.UTF-8
 ENV LANGUAGE de_CH:de
-ENV LC_ALL de_CH.UTF-8  
+ENV LC_ALL de_CH.UTF-8
 
 # install needed font Aller
 RUN wget https://www.fontsquirrel.com/fonts/download/Aller -O Aller.zip
@@ -27,7 +27,7 @@ RUN fc-cache -fv
 RUN mkdir /usr/local/share/texmf/tex/
 RUN mkdir /usr/local/share/texmf/tex/latex/
 RUN cd /usr/local/share/texmf/tex/latex/ && git clone https://github.com/ppschweiz/mmd
-RUN cd /usr/local/share/texmf/&& mktexlsr
+RUN cd /usr/local/share/texmf/ && mktexlsr
 
 # install python-civicrem
 RUN git clone https://github.com/ppschweiz/python-civicrm
