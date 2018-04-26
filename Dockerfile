@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # updated and install base system
 RUN apt-get update \
  && apt-get upgrade -y \
- && apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk cron wget python3-gnupg locales \
+ && apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk wget python3-gnupg locales \
  && apt-get -y clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -39,11 +39,8 @@ RUN git clone https://github.com/ppschweiz/python-civi
 # install runscripts
 COPY run-stats.sh /run-stats.sh
 COPY run-facturer.sh /run-facturer.sh
+COPY run-endless.sh /run-endless.sh
 
-# install cronjobs
-COPY crontab /etc/cron.d/factura-cron
-RUN chmod 0644 /etc/cron.d/factura-cron
-RUN touch /var/log/cron.log
+# run enless script
+CMD /run-endless.sh
 
-# update environment variables and run cron
-CMD printenv | sed 's/^\(.*\)$/export \1/g' > /env && cron && tail -f /var/log/cron.log

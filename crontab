@@ -1,3 +1,0 @@
-50 *  * * * root /run-facturer.sh >> /var/log/cron.log 2>&1
-18 18 * * 2 root /run-stats.sh >> /var/log/cron.log 2>&1
-
