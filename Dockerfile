@@ -1,27 +1,48 @@
-FROM timnn/texlive
+FROM python:3.5-slim-buster
 
-WORKDIR /
+ENV LATEXENGINE=lualatex
+ENV PYTHONUNBUFFERED=1
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-# updated and install base system
-RUN apt-get update \
- && apt-get upgrade -y \
- && apt-get install -y python3-pip python3-dev build-essential git libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python3-tk wget python3-gnupg locales \
- && apt-get -y clean \
- && rm -rf /var/lib/apt/lists/*
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		git \
+		gnupg \
+		dirmngr \
+		graphviz \
+		locales \
+		texlive-latex-extra \
+		texlive-luatex \
+		texlive-xetex \
+	; \
+	luaotfload-tool --update; \
+	rm -rf /var/lib/apt/lists/*
 
 # setup locale
-RUN locale-gen de_CH.UTF-8
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		locales \
+	; \
+	locale-gen de_CH.UTF-8; \
+	rm -rf /var/lib/apt/lists/*
 ENV LANG de_CH.UTF-8
 ENV LANGUAGE de_CH:de
 ENV LC_ALL de_CH.UTF-8
 
 # install needed font Aller
-RUN wget https://www.fontsquirrel.com/fonts/download/Aller -O Aller.zip
-RUN unzip Aller.zip -d /usr/share/fonts/truetype/
-RUN rm Aller.zip
-RUN fc-cache -fv
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		unzip \
+		wget \
+	; \
+	wget https://www.fontsquirrel.com/fonts/download/Aller -O Aller.zip; \
+	unzip Aller.zip -d /usr/share/fonts/truetype/; \
+	rm Aller.zip; \
+	fc-cache -fv; \
+	apt-get purge -y --auto-remove unzip wget; \
+	rm -rf /var/lib/apt/lists/*
 
 # install latex templates
 RUN mkdir /usr/local/share/texmf/tex/
@@ -31,7 +52,22 @@ RUN cd /usr/local/share/texmf/ && mktexlsr
 
 # install python-civicrem
 RUN git clone https://github.com/ppschweiz/python-civicrm
-RUN cd python-civicrm && python3 setup.py install
+RUN set -ex; \
+	apt-get update; \
+	apt-get install -y --no-install-recommends \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		liblcms2-dev \
+		libtiff5-dev \
+		libwebp-dev \
+		tcl8.6-dev \
+		tk8.6-dev \
+		zlib1g-dev \
+	; \
+	cd python-civicrm; \
+	python3 setup.py install; \
+	pip install python-gnupg; \
+	rm -rf /var/lib/apt/lists/*
 
 # install PPS python civi
 RUN git clone https://github.com/ppschweiz/python-civi
@@ -43,4 +79,3 @@ COPY run-endless.sh /run-endless.sh
 
 # run enless script
 CMD /run-endless.sh
-
