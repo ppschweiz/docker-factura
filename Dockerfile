@@ -25,7 +25,7 @@ RUN set -ex; \
 		locales \
 	; \
 	locale-gen de_CH.UTF-8; \
-	update-locale LANG=de_CH.UTF-8; \
+	update-locale de_CH; \
 	rm -rf /var/lib/apt/lists/*
 ENV LANG de_CH.UTF-8
 ENV LANGUAGE de_CH:de
