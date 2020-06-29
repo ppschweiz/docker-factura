@@ -10,7 +10,6 @@ RUN set -ex; \
 		gnupg \
 		dirmngr \
 		graphviz \
-		locales \
 		texlive-latex-extra \
 		texlive-luatex \
 		texlive-xetex \
@@ -18,18 +17,7 @@ RUN set -ex; \
 	luaotfload-tool --update; \
 	rm -rf /var/lib/apt/lists/*
 
-# setup locale
-RUN set -ex; \
-	apt-get update; \
-	apt-get install -y --no-install-recommends \
-		locales \
-	; \
-	locale-gen de_CH.UTF-8; \
-	update-locale de_CH; \
-	rm -rf /var/lib/apt/lists/*
-ENV LANG de_CH.UTF-8
-ENV LANGUAGE de_CH:de
-ENV LC_ALL de_CH.UTF-8
+ENV LANG C.UTF-8
 
 # install needed font Aller
 RUN set -ex; \
