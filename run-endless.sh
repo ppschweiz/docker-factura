@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 while :
 do
@@ -9,21 +9,20 @@ do
 	DOW=$(date +%u)
 	HOUR=$(date +%H)
 
-	if [ $DOW -eq 1 ]
+	if [ "$DOW" -eq 1 ]
 	then
-		if [ $HOUR -gt 19 ]
+		if [ "$HOUR" -gt 19 ]
 		then
 			./run-stats.sh
 		fi
 	fi
 
-        for i in `seq 1 24`;
-        do
-        	for i in `seq 1 30`;
-        	do
+	for i in $(seq 1 24);
+	do
+		for i in $(seq 1 30);
+		do
 			sleep 10
-        	done
+		done
 		date
-        done    
+	done
 done
-
